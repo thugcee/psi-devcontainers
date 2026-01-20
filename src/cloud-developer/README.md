@@ -6,6 +6,12 @@
 docker pull ghcr.io/psi-polska/devcontainers/cloud-developer
 ```
 
+Rebuild the image after local changes or when you want to use this
+one as a base for `web-developer` dev-container.
+
+```shell
+docker build -t ghcr.io/psi-polska/devcontainers/cloud-developer -f Dockerfile .
+```
 ## Selected features
 
 * [gcloud](https://cloud.google.com/sdk/gcloud): Google Cloud CLI with

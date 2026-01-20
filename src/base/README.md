@@ -6,6 +6,11 @@
 docker pull ghcr.io/psi-polska/devcontainers/base
 ```
 
+Rebuild the image after local changes
+
+```shell
+docker build -t ghcr.io/psi-polska/devcontainers/base -f Dockerfile .
+```
 ## Selected features
 
 * editors (`vim`, `nano`)
@@ -31,7 +36,7 @@ docker pull ghcr.io/psi-polska/devcontainers/base
     * extensions: 
         [pip](https://pypi.org/project/pip/), 
         [venv](https://docs.python.org/3/library/venv.html)
-* [triv](https://trivy.dev/): vulnerability scanner
+* [trivy](https://trivy.dev/): vulnerability scanner
 * [velero](https://velero.io/): backup and restore for Kubernetes resources with
     * command line completion
     * `v` alias

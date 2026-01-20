@@ -1,6 +1,6 @@
 {
 	"name": "[GCP] Web Developer",
-	"image": "ghcr.io/psi-polska/devcontainers/web-developer",
+	"build": { "dockerfile": "Dockerfile" },
 	"remoteUser": "dev",
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
@@ -14,8 +14,8 @@
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	},
 	"containerEnv": {
-		"CLOUDSDK_CORE_PROJECT": "[[MY_PROJECT]]",
-		"GOOGLE_CLOUD_QUOTA_PROJECT": "[[MY_PROJECT]]"
+		"CLOUDSDK_CORE_PROJECT": "psi-de-0-sandbox-pjfc-poc",
+		"GOOGLE_CLOUD_QUOTA_PROJECT": "psi-de-0-sandbox-pjfc-poc"
 	},
 	"customizations": {
 		"vscode": {
@@ -27,6 +27,8 @@
 		}
 	},
 	"mounts": [
+		"source=dev-home,target=/home/dev,type=volume",
+		"source=nix-store,target=/nix,type=volume",
 		"source=web-developer-bash-history,target=/commandhistory,type=volume",
 		"source=${localWorkspaceFolderBasename}-gcloud,target=/home/dev/.config/gcloud,type=volume",
 		"source=${localWorkspaceFolderBasename}-kube,target=/home/dev/.kube,type=volume",

@@ -1,4 +1,15 @@
-# Dev Container Images
+
+# Sew's custom Dev Container Images
+
+Be aware, Docker images created here have the same tags as the official ones,
+so to use these custom images you have to locally build all required images
+(base too). Build commands are added to READMEs.
+
+The dev-container definitions in `.devcontainer` directory are only for local
+testing and are quite neglected. Use `.devcontainer.json` files from `src`
+to create your dev-containers.
+
+## Original README content
 
 [![Open in Dev Container](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open%20in%20Dev%20Container&color=green)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=git@github.com:PSI-Polska/devcontainers.git)
 
