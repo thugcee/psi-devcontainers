@@ -6,6 +6,11 @@
 docker pull ghcr.io/psi-polska/devcontainers/base
 ```
 
+Rebuild the image after local changes
+
+```shell
+docker build -t ghcr.io/psi-polska/devcontainers/base -f Dockerfile .
+```
 ## Selected features
 
 * editors (`vim`, `nano`)

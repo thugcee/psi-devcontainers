@@ -1,4 +1,4 @@
-FROM debian:forky-slim
+FROM debian:trixie-slim
 
 ARG USERNAME=dev
 ARG USER_UID=1001

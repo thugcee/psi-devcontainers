@@ -6,6 +6,12 @@
 docker pull ghcr.io/psi-polska/devcontainers/cloud-developer
 ```
 
+Rebuild the image after local changes or when you want to use this
+one as a base for `web-developer` dev-container.
+
+```shell
+docker build -t ghcr.io/psi-polska/devcontainers/cloud-developer -f Dockerfile .
+```
 ## Selected features
 
 * [antigravity-cli](https://antigravity.google): Google AI agent terminal interface
