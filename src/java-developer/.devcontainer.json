@@ -1,6 +1,6 @@
 {
   "name": "[GCP] Java Developer",
-  "image": "ghcr.io/psi-polska/devcontainers/java-developer",
+  "build": { "dockerfile": "Dockerfile" },
   "remoteUser": "dev",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
@@ -14,9 +14,9 @@
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
   "containerEnv": {
-    "CLOUDSDK_CORE_PROJECT": "[[GCP_PROJECT_ID]]",
-    "GOOGLE_CLOUD_PROJECT": "[[GCP_PROJECT_ID]]",
-    "GOOGLE_CLOUD_QUOTA_PROJECT": "[[GCP_PROJECT_ID]]"
+    "CLOUDSDK_CORE_PROJECT": "psi-de-0-sandbox-pjfc-poc",
+    "GOOGLE_CLOUD_QUOTA_PROJECT": "psi-de-0-sandbox-pjfc-poc",
+    "GOOGLE_CLOUD_PROJECT": "psi-de-0-sandbox-pjfc-poc",
   },
   "customizations": {
     "vscode": {
@@ -33,6 +33,8 @@
     }
   },
   "mounts": [
+    "source=dev-home,target=/home/dev,type=volume",
+    "source=nix-store,target=/nix,type=volume",
     "source=java-developer-bash-history,target=/commandhistory,type=volume",
     "source=${localWorkspaceFolderBasename}-gcloud,target=/home/dev/.config/gcloud,type=volume",
     "source=${localWorkspaceFolderBasename}-kube,target=/home/dev/.kube,type=volume",
