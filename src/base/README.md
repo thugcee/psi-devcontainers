@@ -16,7 +16,8 @@ docker build -t ghcr.io/psi-polska/devcontainers/base -f Dockerfile .
 * editors (`vim`, `nano`)
 * file archivers (`zip`, `tar`)
 * network utilities (e.g.: `ping`, `telnet`, `curl`, `wget`)
-* [ansible](https://docs.ansible.com/ansible/latest/index.html): automation for remote systems management
+* [ansible](https://docs.ansible.com/ansible/latest/index.html): automation for remote systems management with
+    * [ansible-lint](https://ansible.readthedocs.io/projects/lint/): best practices checker
 * [argocd](https://argo-cd.readthedocs.io/en/stable/user-guide/commands/argocd/): ArgoCD CLI with
     * command line completion
 * [docker](https://docs.docker.com/reference/cli/docker/): Docker CLI
@@ -32,6 +33,19 @@ docker build -t ghcr.io/psi-polska/devcontainers/base -f Dockerfile .
         [neat](https://github.com/itaysk/kubectl-neat), 
         [kubeseal](https://github.com/bitnami-labs/sealed-secrets)
 * [mc](https://midnight-commander.org/): Midnight Commander `:-)`
+* [node.js](https://nodejs.org/en), [npm](https://www.npmjs.com/), [angular CLI](https://angular.io/cli)
+* [nvm](https://github.com/nvm-sh/nvm): node.js environment manager
+
+    ```shell
+    ## Example calls
+    # list versions available locally
+    nvm ls --no-alias
+    # show current node.js version
+    nvm current
+    # switch to given node.js version
+    nvm use 16
+    ```
+
 * [python](https://www.python.org/): programming language with
     * extensions: 
         [pip](https://pypi.org/project/pip/), 

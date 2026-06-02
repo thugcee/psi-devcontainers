@@ -17,8 +17,15 @@ RUN echo 'Adding Google Cloud repository...' && \
 
 USER $USERNAME
 
-RUN mkdir -p ~/.config/gcloud && \
+RUN echo "Configuring gcloud..." && \
+    mkdir -p ~/.config/gcloud ~/.gemini && \
     gcloud config set component_manager/disable_update_check True && \
     gcloud config set core/disable_usage_reporting True && \
     gcloud config set survey/disable_prompts True && \
-    terraform -install-autocomplete
+    pip3 install --no-cache-dir --break-system-packages --user google-auth && \
+    terraform -install-autocomplete && \
+    echo "Installing gemini-cli..." && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" && \
+    npm cache clean --force && \
+    npm install -g @google/gemini-cli@latest

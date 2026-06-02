@@ -1,30 +1,43 @@
 {
-	"name": "BASE",
-	"build": {
-		"dockerfile": "../../src/base/Dockerfile"
-	},
-	"remoteUser": "dev",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"version": "latest",
-			"enableNonRootDocker": "true",
-			"moby": "false",
-			"dockerDashComposeVersion": "none"
-		}
-	},
-	"remoteEnv": {
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"github.vscode-github-actions",
-				"ms-azuretools.vscode-docker"
-			]
-		}
-	},
-	"mounts": [
-		"source=${localWorkspaceFolderBasename}-bash-history,target=/commandhistory,type=volume",
-		"source=${localWorkspaceFolderBasename}-kube,target=/home/dev/.kube,type=volume"
-	]
+  "name": "BASE",
+  "build": {
+    "dockerfile": "../../src/base/Dockerfile"
+  },
+  "remoteUser": "dev",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "false",
+      "dockerDashComposeVersion": "none"
+    }
+  },
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "github.vscode-github-actions",
+        "google.gemini-cli-vscode-ide-companion",
+        "MermaidChart.vscode-mermaid-chart",
+        "ms-azuretools.vscode-containers",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "chat.disableAIFeatures": true,
+        "editor.detectIndentation": false,
+        "editor.formatOnSave": true,
+        "files.autoSave": "afterDelay",
+        "files.exclude": {
+          "**/.git": true
+        }
+      }
+    }
+  },
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-bash-history,target=/commandhistory,type=volume",
+    "source=${localWorkspaceFolderBasename}-gemini,target=/home/dev/.gemini,type=volume"
+  ]
 }

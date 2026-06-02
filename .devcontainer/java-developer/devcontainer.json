@@ -1,12 +1,9 @@
 {
-  "name": "[GCP] Cloud Developer",
+  "name": "[GCP] Java Developer",
   "build": {
-    "dockerfile": "../../src/cloud-developer/Dockerfile"
+    "dockerfile": "../../src/java-developer/Dockerfile"
   },
   "remoteUser": "dev",
-  "remoteEnv": {
-    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-  },
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1.10.0": {
       "version": "latest",
@@ -14,6 +11,9 @@
       "moby": "false",
       "dockerDashComposeVersion": "none"
     }
+  },
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
   "customizations": {
     "vscode": {
@@ -24,20 +24,11 @@
         "MermaidChart.vscode-mermaid-chart",
         "ms-azuretools.vscode-containers",
         "streetsidesoftware.code-spell-checker"
-      ],
-      "settings": {
-        "chat.disableAIFeatures": true,
-        "editor.detectIndentation": false,
-        "editor.formatOnSave": true,
-        "files.autoSave": "afterDelay",
-        "files.exclude": {
-          "**/.git": true
-        }
-      }
+      ]
     }
   },
   "mounts": [
-    "source=${localWorkspaceFolderBasename}-bash-history,target=/commandhistory,type=volume",
+    "source=java-developer-bash-history,target=/commandhistory,type=volume",
     "source=${localWorkspaceFolderBasename}-gemini,target=/home/dev/.gemini,type=volume"
   ]
 }

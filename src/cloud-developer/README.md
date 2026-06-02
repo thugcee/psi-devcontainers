@@ -15,7 +15,8 @@ docker build -t ghcr.io/psi-polska/devcontainers/cloud-developer -f Dockerfile .
 ## Selected features
 
 * [gcloud](https://cloud.google.com/sdk/gcloud): Google Cloud CLI with
-  * update check, usage reporting and survey prompts are disabled 
+  * update check, usage reporting and survey prompts are disabled
+* [gemini-cli](https://github.com/google-gemini/gemini-cli): Google AI terminal agent
 * [terraform](https://developer.hashicorp.com/terraform/cli): terraform CLI with
   * command line completion
 * see also [base image selected features](../base/README.md#selected-features)

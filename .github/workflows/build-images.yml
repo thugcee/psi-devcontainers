@@ -14,24 +14,25 @@ env:
   BASE_IMAGE_PATH: psi-polska/devcontainers/base
   CD_IMAGE_NAME: cloud-developer
   CD_IMAGE_PATH: psi-polska/devcontainers/cloud-developer
-  WEB_IMAGE_NAME: web-developer
-  WEB_IMAGE_PATH: psi-polska/devcontainers/web-developer
+  JAVA_IMAGE_NAME: java-developer
+  JAVA_IMAGE_PATH: psi-polska/devcontainers/java-developer
 
 jobs:
   build-and-push-images:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      packages: write
+      artifact-metadata: write
       attestations: write
+      contents: write
       id-token: write
+      packages: write
       security-events: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
       - name: Log in to ${{ env.REGISTRY }}
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -39,13 +40,13 @@ jobs:
 
       - name: (BASE) Extract metadata
         id: meta-base
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.CD_IMAGE_PATH }}
 
       - name: (BASE) Build and push
         id: build-base
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: src/${{ env.BASE_IMAGE_NAME }}
           push: ${{ github.ref == 'refs/heads/main' }}
@@ -54,7 +55,7 @@ jobs:
           no-cache: true
 
       - name: (BASE) Generate artifact attestation
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.BASE_IMAGE_PATH}}
           subject-digest: ${{ steps.build-base.outputs.digest }}
@@ -62,13 +63,13 @@ jobs:
 
       - name: (CD) Extract metadata
         id: meta-cd
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.CD_IMAGE_PATH }}
 
       - name: (CD) Build and push
         id: build-cd
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: src/${{ env.CD_IMAGE_NAME }}
           push: ${{ github.ref == 'refs/heads/main' }}
@@ -77,67 +78,67 @@ jobs:
           no-cache: true
 
       - name: (CD) Generate artifact attestation
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.CD_IMAGE_PATH}}
           subject-digest: ${{ steps.build-cd.outputs.digest }}
           push-to-registry: ${{ github.ref == 'refs/heads/main' }}
 
-      - name: (WEB) Extract metadata
-        id: meta-web
-        uses: docker/metadata-action@v5
+      - name: (JAVA) Extract metadata
+        id: meta-java
+        uses: docker/metadata-action@v6
         with:
-          images: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_PATH }}
+          images: ${{ env.REGISTRY }}/${{ env.JAVA_IMAGE_PATH }}
 
-      - name: (WEB) Build and push
-        id: build-web
-        uses: docker/build-push-action@v6
+      - name: (JAVA) Build and push
+        id: build-java
+        uses: docker/build-push-action@v7
         with:
-          context: src/${{ env.WEB_IMAGE_NAME }}
+          context: src/${{ env.JAVA_IMAGE_NAME }}
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_PATH }}
-          labels: ${{ steps.meta-web.outputs.labels }}
+          tags: ${{ env.REGISTRY }}/${{ env.JAVA_IMAGE_PATH }}
+          labels: ${{ steps.meta-java.outputs.labels }}
           no-cache: true
 
-      - name: (WEB) Run Trivy scanner
-        uses: aquasecurity/trivy-action@0.33.1
+      - name: (JAVA) Run Trivy scanner
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_PATH }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.JAVA_IMAGE_PATH }}
           format: 'sarif'
           scanners: 'vuln'
           severity: 'CRITICAL,HIGH'
           limit-severities-for-sarif: true
-          output: 'trivy-web.sarif'
+          output: 'trivy-java.sarif'
 
-      - name: (WEB) Upload Trivy scan results to GitHub Security tab
+      - name: (JAVA) Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: 'trivy-web.sarif'
+          sarif_file: 'trivy-java.sarif'
 
-      - name: (WEB) Generate SBOM (github) and submit to Dependency Graph
-        uses: aquasecurity/trivy-action@0.33.1
+      - name: (JAVA) Generate SBOM (github) and submit to Dependency Graph
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_PATH }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.JAVA_IMAGE_PATH }}
           format: 'github'
-          output: 'sbom-github-web_developer.json'
+          output: 'sbom-github-java_developer.json'
           github-pat: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: (WEB) Generate SBOM (CycloneDX)
-        uses: aquasecurity/trivy-action@0.33.1
+      - name: (JAVA) Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_PATH }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.JAVA_IMAGE_PATH }}
           format: 'cyclonedx'
-          output: 'sbom-cyclonedx-web_developer.json'
+          output: 'sbom-cyclonedx-java_developer.json'
 
-      - name: (WEB) Upload SBOM (CycloneDX) as a Github artifact
-        uses: actions/upload-artifact@v6
+      - name: (JAVA) Upload SBOM (CycloneDX) as a Github artifact
+        uses: actions/upload-artifact@v7
         with:
           name: trivy-sbom-report
-          path: 'sbom-cyclonedx-web_developer.json'
+          path: 'sbom-cyclonedx-java_developer.json'
 
-      - name: (WEB) Generate artifact attestation
-        uses: actions/attest-build-provenance@v3
+      - name: (JAVA) Generate artifact attestation
+        uses: actions/attest-build-provenance@v4
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE_PATH}}
-          subject-digest: ${{ steps.build-web.outputs.digest }}
+          subject-name: ${{ env.REGISTRY }}/${{ env.JAVA_IMAGE_PATH}}
+          subject-digest: ${{ steps.build-java.outputs.digest }}
           push-to-registry: ${{ github.ref == 'refs/heads/main' }}

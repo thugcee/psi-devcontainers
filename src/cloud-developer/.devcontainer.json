@@ -1,35 +1,40 @@
 // Replace [[GCP_PROJECT_ID]] with your GCP Project ID
 {
-	"name": "[GCP] Cloud Developer",
-	"build": { "dockerfile": "Dockerfile" },
-	"remoteUser": "dev",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"version": "latest",
-			"enableNonRootDocker": "true",
-			"moby": "false",
-			"dockerDashComposeVersion": "none"
-		}
-	},
-	"remoteEnv": {
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	},
-	"containerEnv": {
-		"CLOUDSDK_CORE_PROJECT": "psi-de-0-sandbox-pjfc-poc",
-		"GOOGLE_CLOUD_QUOTA_PROJECT": "psi-de-0-sandbox-pjfc-poc"
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"GitLab.gitlab-workflow",
-				"hashicorp.terraform",
-				"ms-azuretools.vscode-containers"
-			]
-		}
-	},
-	"mounts": [
-		"source=${localWorkspaceFolderBasename}-bash-history,target=/commandhistory,type=volume",
-		"source=${localWorkspaceFolderBasename}-gcloud,target=/home/dev/.config/gcloud,type=volume",
-		"source=${localWorkspaceFolderBasename}-kube,target=/home/dev/.kube,type=volume"
-	]
+  "name": "[GCP] Cloud Developer",
+  "build": { "dockerfile": "Dockerfile" },
+  "remoteUser": "dev",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "false",
+      "dockerDashComposeVersion": "none"
+    }
+  },
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "containerEnv": {
+    "CLOUDSDK_CORE_PROJECT": "psi-de-0-sandbox-pjfc-poc",
+    "GOOGLE_CLOUD_PROJECT": "psi-de-0-sandbox-pjfc-poc",
+    "GOOGLE_CLOUD_QUOTA_PROJECT": "psi-de-0-sandbox-pjfc-poc"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "GitLab.gitlab-workflow",
+        "google.gemini-cli-vscode-ide-companion",
+        "hashicorp.terraform",
+        "MermaidChart.vscode-mermaid-chart",
+        "ms-azuretools.vscode-containers",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  },
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-bash-history,target=/commandhistory,type=volume",
+    "source=${localWorkspaceFolderBasename}-gcloud,target=/home/dev/.config/gcloud,type=volume",
+    "source=${localWorkspaceFolderBasename}-kube,target=/home/dev/.kube,type=volume"
+  ]
 }

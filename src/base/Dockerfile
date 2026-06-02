@@ -5,6 +5,7 @@ ARG USER_UID=1001
 ARG USER_GID=1001
 # debian:bookworm => ubuntu:jammy (https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html#installing-ansible-on-debian)
 ARG UBUNTU_CODENAME='noble'
+ARG TRIVY_VERSION=0.70.0
 
 ENV LANG="C.UTF-8" \
     DEBIAN_FRONTEND="noninteractive"
@@ -12,13 +13,16 @@ ENV LANG="C.UTF-8" \
 USER root
 
 COPY files/certs/*.crt /usr/local/share/ca-certificates/
+COPY files/pylintrc /etc/pylintrc
 
 RUN apt-get update -yq && \
     apt-get install --no-install-recommends -yqq \
+        apache2-utils \
         apt-transport-https \
         apt-utils \
         bash-completion \
         ca-certificates \
+        chromium \
         curl \
         dnsutils \
         git \
@@ -27,7 +31,13 @@ RUN apt-get update -yq && \
         iperf3 \
         iputils-ping \
         jq \
+        libgbm-dev \
+        libgtk-3-0 \
+        libnotify-dev \
+        libxss1 \
+        libxtst6 \
         lsb-release \
+        lsof \
         mc \
         nano \
         pre-commit \
@@ -43,10 +53,12 @@ RUN apt-get update -yq && \
         tar \
         telnet \
         tmux \
-        uuid \
         unzip \
+        uuid \
         vim \
         wget \
+        xauth \
+        xvfb \
         yamllint \
         zip && \
     echo 'Adding ansible repository...' && \
@@ -94,11 +106,12 @@ RUN apt-get update -yq && \
     apt-get update -yq && \
     apt-get install -yqq \
         ansible \
+        ansible-lint \
         docker-ce-cli \
         docker-buildx-plugin \
         docker-compose-plugin \
         kubectl \
-        trivy && \
+        trivy=${TRIVY_VERSION} && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd --gid $USER_GID $USERNAME && \
@@ -108,9 +121,11 @@ RUN apt-get update -yq && \
     install -d -o $USERNAME -g $USERNAME /commandhistory && \
     echo 'git: mark all directories as safe' && \
     git config --system --add safe.directory '*' && \
+    update-alternatives --set editor /usr/bin/vim.basic && \
     update-ca-certificates
 
 USER $USERNAME
+SHELL [ "/bin/bash", "-c" ]
 
 RUN curl https://raw.githubusercontent.com/devcontainers/features/refs/heads/main/src/common-utils/scripts/bash_theme_snippet.sh >>~/.bashrc && \
     mkdir -p ~/.kube && \
@@ -135,4 +150,16 @@ RUN curl https://raw.githubusercontent.com/devcontainers/features/refs/heads/mai
         kubectl krew install neat && \
     # Persisting bash history (https://code.visualstudio.com/remote/advancedcontainers/persist-bash-history)
     touch /commandhistory/.bash_history && \
-    echo "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" >> ~/.bashrc
+    echo "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" >> ~/.bashrc && \
+    echo "Installing nvm, node.js, npm, angular cli..." && \
+    NVM_VERSION=$(curl -s https://api.github.com/repos/nvm-sh/nvm/tags | jq -r '.[0].name' | cut -c 2-) && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" && \
+    nvm install 22 && \
+    nvm install 24 && \
+    nvm install 25 && \
+    nvm install 26 && \
+    nvm alias default 24 && \
+    npm cache clean --force && \
+    npm install -g @angular/cli@21
