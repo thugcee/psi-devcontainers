@@ -81,7 +81,7 @@ RUN apt-get update -yq && \
         dpkg -i ./glab_${GLAB_VERSION}_linux_amd64.deb && \
         rm ./glab_${GLAB_VERSION}_linux_amd64.deb && \
     echo 'Installing helm...' && \
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash && \
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash && \
     echo "Adding kubectl repository..." && \
         KUBECTL_VERSION="$(curl -sL https://dl.k8s.io/release/stable.txt | cut -c -5)" && \
         curl -fsSL https://pkgs.k8s.io/core:/stable:/${KUBECTL_VERSION}/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg && \
