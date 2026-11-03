@@ -38,7 +38,10 @@
     }
   },
   "mounts": [
-    "source=dev-home,target=/home/dev,type=volume",
+    "source=pjf-dev-projects,target=/home/dev/projects,type=volume",
+    "source=pjf-dev-local,target=/home/dev/.local,type=volume",
+    "source=pjf-dev-config,target=/home/dev/.config,type=volume",
+    "source=pjf-dev-ssh,target=/home/dev/.ssh,type=volume",
     "source=nix-store,target=/nix,type=volume",
     "source=java-developer-bash-history,target=/commandhistory,type=volume",
     "source=pjf-dev-gcloud,target=/home/dev/.config/gcloud,type=volume",
@@ -46,5 +49,6 @@
     "source=pjf-dev-m2-repository,target=/home/dev/.m2/repository,type=volume",
     "source=/mnt/c/Users/${localEnv:USERNAME}/.m2/settings.xml,target=/home/dev/.m2/settings.xml,type=bind,consistency=cached",
     "source=/mnt/c/Users/${localEnv:USERNAME}/.npmrc,target=/home/dev/.npmrc,type=bind,consistency=cached"
-  ]
+  ],
+  "postCreateCommand": "ln -sfn /home/dev/projects /home/dev/IdeaProjects"
 }
