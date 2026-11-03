@@ -57,7 +57,8 @@ RUN apt-get update -yq && \
         xauth \
         xvfb \
         yamllint \
-        zip && \
+        zip \
+        zsh && \
     echo 'Installing ArgoCD CLI...' && \
         ARGOCD_VERSION=$(curl -sL https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION) && \
         curl -sSL https://github.com/argoproj/argo-cd/releases/download/v$ARGOCD_VERSION/argocd-linux-amd64 -o argocd-linux-amd64 && \
