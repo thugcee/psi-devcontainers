@@ -16,10 +16,16 @@
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
+  "postStartCommand": "ln -sfn ~/.local/state/nix/profiles/profile ~/.nix-profile",
   "containerEnv": {
     "CLOUDSDK_CORE_PROJECT": "psi-de-0-dev-cft-pjfc",
     "GOOGLE_CLOUD_QUOTA_PROJECT": "psi-de-0-dev-cft-pjfc",
-    "GOOGLE_CLOUD_PROJECT": "psi-de-0-dev-cft-pjfc"
+    "GOOGLE_CLOUD_PROJECT": "psi-de-0-dev-cft-pjfc",
+    "USER": "dev",
+    "XDG_CONFIG_HOME": "/home/dev/.config",
+    "XDG_DATA_HOME": "/home/dev/.local/share",
+    "XDG_STATE_HOME": "/home/dev/.local/state",
+    "NIX_PROFILES": "/home/dev/.local/state/nix/profiles/profile"
   },
   "customizations": {
     "vscode": {
@@ -50,5 +56,5 @@
     "source=/mnt/c/Users/${localEnv:USERNAME}/.m2/settings.xml,target=/home/dev/.m2/settings.xml,type=bind,consistency=cached",
     "source=/mnt/c/Users/${localEnv:USERNAME}/.npmrc,target=/home/dev/.npmrc,type=bind,consistency=cached"
   ],
-  "postCreateCommand": "ln -sfn /home/dev/projects /home/dev/IdeaProjects"
+  "postCreateCommand": "ln -sfn /home/dev/projects /home/dev/IdeaProjects && echo 'export PATH=\"$HOME/.local/state/nix/profiles/profile/bin:$PATH\"' >> /home/dev/.profile && echo 'export PATH=\"$HOME/.local/state/nix/profiles/profile/bin:$PATH\"' >> /home/dev/.bashrc"
 }
